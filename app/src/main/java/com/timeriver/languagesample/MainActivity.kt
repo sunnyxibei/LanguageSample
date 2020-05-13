@@ -1,15 +1,18 @@
 package com.timeriver.languagesample
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
+
 /**
  * Switch Language within app sample
  *
- * en zh-rCn zh-rSG
+ * en zh-rCn zh-rTW
+ * 小米手机MIUI中繁体中文对应的是zh-rTW，所以这里使用zh-rTW代表繁体中文
  */
 class MainActivity : BaseActivity() {
 
@@ -20,13 +23,27 @@ class MainActivity : BaseActivity() {
         Log.d("MainActivity", Locale.getDefault().displayName)
 
         button_en.setOnClickListener {
-            //todo 切换英文
+            changeLanguage(LanguageType.ENGLISH.localName)
         }
         button_zh_cn.setOnClickListener {
-            //todo 切换中文
+            changeLanguage(LanguageType.SIMPLIFIED_CHINESE.localName)
         }
         button_zh_tw.setOnClickListener {
-            //todo 切换中文繁体
+            changeLanguage(LanguageType.TRADITIONAL_CHINESE.localName)
         }
+        button_reset.setOnClickListener {
+            changeLanguage("")
+        }
+    }
+
+    private fun changeLanguage(language: String) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            changeAppLanguage()
+        }
+        SharedPreferencesService.instance.language = language
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 }
