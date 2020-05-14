@@ -1,67 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_constraintVertical_chainStyle="spread"
-    tools:context=".MainActivity">
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:text="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@id/button_en"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_en"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:text="English"
-        app:layout_constraintBottom_toTopOf="@id/button_zh_cn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_zh_cn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:text="简体中文"
-        app:layout_constraintBottom_toTopOf="@id/button_zh_tw"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_en" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_zh_tw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:text="繁體中文（台灣）"
-        app:layout_constraintBottom_toTopOf="@id/button_reset"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_zh_cn" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:text="跟随系统"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_zh_tw" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".MainActivity" />

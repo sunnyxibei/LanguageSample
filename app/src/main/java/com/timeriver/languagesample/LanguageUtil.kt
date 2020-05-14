@@ -8,10 +8,11 @@ import android.os.LocaleList
 import android.util.Log
 import java.util.*
 
-@Suppress("DEPRECATION")
 fun Context.changeAppLanguage() {
     val configuration = resources.configuration
+    configuration.locale = getLocaleByLanguage()
     configuration.setLocale(getLocaleByLanguage())
+    Log.d("Language", "changeLanguage ${getLocaleByLanguage()}")
     resources.updateConfiguration(configuration, resources.displayMetrics)
 }
 

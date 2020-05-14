@@ -1,11 +1,6 @@
 package com.timeriver.languagesample
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 
 /**
@@ -19,31 +14,10 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        Log.d("MainActivity", Locale.getDefault().displayName)
-
-        button_en.setOnClickListener {
-            changeLanguage(LanguageType.ENGLISH.localName)
-        }
-        button_zh_cn.setOnClickListener {
-            changeLanguage(LanguageType.SIMPLIFIED_CHINESE.localName)
-        }
-        button_zh_tw.setOnClickListener {
-            changeLanguage(LanguageType.TRADITIONAL_CHINESE.localName)
-        }
-        button_reset.setOnClickListener {
-            changeLanguage("")
-        }
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fl_container, LanguageFragment())
+            .commitAllowingStateLoss()
     }
 
-    private fun changeLanguage(language: String) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            changeAppLanguage()
-        }
-        SharedPreferencesService.instance.language = language
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-        finish()
-    }
 }

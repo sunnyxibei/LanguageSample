@@ -18,7 +18,7 @@ class SharedPreferencesService() {
 
     fun putString(key: String, value: String) {
         if (getString(key) != value) {
-            sp.edit().putString(key, value).apply()
+            sp.edit().putString(key, value).commit()
         }
     }
 
