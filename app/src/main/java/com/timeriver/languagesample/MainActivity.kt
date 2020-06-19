@@ -1,6 +1,7 @@
 package com.timeriver.languagesample
 
 import android.os.Bundle
+import timber.log.Timber
 
 
 /**
@@ -18,6 +19,12 @@ class MainActivity : BaseActivity() {
             .beginTransaction()
             .add(R.id.fl_container, LanguageFragment())
             .commitAllowingStateLoss()
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed() 时，将调用 addCallback 注册的所有回调。
+        super.onBackPressed()
+        Timber.d("MainActivity, onBackPressed")
     }
 
 }

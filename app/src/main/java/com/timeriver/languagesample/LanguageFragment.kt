@@ -1,5 +1,6 @@
 package com.timeriver.languagesample
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,8 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_language.*
+import timber.log.Timber
 
 class LanguageFragment : Fragment() {
 
@@ -18,6 +22,19 @@ class LanguageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return layoutInflater.inflate(R.layout.fragment_language, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onCustomBack()
+                Timber.d("LanguageFragment, handleOnBackPressed")
+            }
+        }
+        callback.isEnabled = false
+        //责任链模式，调用顺序跟添加顺序相反，所以dispatcher内部维护了一个栈结构？
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +54,7 @@ class LanguageFragment : Fragment() {
     }
 
     private fun changeLanguage(language: String) {
-        Log.d("MainActivity", "changeLanguage $language")
+        Timber.d("LanguageFragment, changeLanguage $language")
         SharedPreferencesService.instance.language = language
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             context?.changeAppLanguage()
@@ -46,7 +63,11 @@ class LanguageFragment : Fragment() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         requireActivity().finish()
-//        android.os.Process.killProcess(android.os.Process.myPid());
+        //android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    private fun onCustomBack() {
+
     }
 
 }

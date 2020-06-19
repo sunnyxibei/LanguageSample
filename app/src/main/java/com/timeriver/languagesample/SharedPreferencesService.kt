@@ -2,7 +2,7 @@ package com.timeriver.languagesample
 
 import android.content.Context
 
-class SharedPreferencesService() {
+class SharedPreferencesService {
 
     private val sp = App.appContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
 
@@ -18,7 +18,7 @@ class SharedPreferencesService() {
 
     fun putString(key: String, value: String) {
         if (getString(key) != value) {
-            sp.edit().putString(key, value).commit()
+            sp.edit().putString(key, value).apply()
         }
     }
 
