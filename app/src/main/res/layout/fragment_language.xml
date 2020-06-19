@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_constraintVertical_chainStyle="spread"
-    tools:context=".MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_app_name"

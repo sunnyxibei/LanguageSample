@@ -1,8 +1,13 @@
-package com.timeriver.languagesample
+package com.timeriver.languagesample.ui.activity
 
 import android.os.Bundle
+import com.timeriver.languagesample.BaseActivity
+import com.timeriver.languagesample.R
+import com.timeriver.languagesample.ui.adapter.MainPageAdapter
+import com.timeriver.languagesample.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-
 
 /**
  * Switch Language within app sample
@@ -12,13 +17,12 @@ import timber.log.Timber
  */
 class MainActivity : BaseActivity() {
 
+    private val viewModel: MainViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fl_container, LanguageFragment())
-            .commitAllowingStateLoss()
+        main_pager.adapter = MainPageAdapter(this)
     }
 
     override fun onBackPressed() {

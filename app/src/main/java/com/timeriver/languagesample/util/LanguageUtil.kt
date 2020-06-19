@@ -1,17 +1,19 @@
-package com.timeriver.languagesample
+package com.timeriver.languagesample.util
 
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.LocaleList
-import android.util.Log
+import com.timeriver.languagesample.domain.model.LanguageType
+import com.timeriver.languagesample.SharedPreferencesService
 import timber.log.Timber
 import java.util.*
 
 fun Context.changeAppLanguage() {
     val configuration = resources.configuration
-    configuration.locale = getLocaleByLanguage()
+    configuration.locale =
+        getLocaleByLanguage()
     configuration.setLocale(getLocaleByLanguage())
     Timber.d("Language, changeLanguage ${getLocaleByLanguage()}")
     resources.updateConfiguration(configuration, resources.displayMetrics)

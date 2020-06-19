@@ -1,16 +1,19 @@
-package com.timeriver.languagesample
+package com.timeriver.languagesample.ui.fragment
 
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.fragment.app.Fragment
+import com.timeriver.languagesample.domain.model.LanguageType
+import com.timeriver.languagesample.R
+import com.timeriver.languagesample.SharedPreferencesService
+import com.timeriver.languagesample.util.changeAppLanguage
+import com.timeriver.languagesample.ui.activity.MainActivity
 import kotlinx.android.synthetic.main.fragment_language.*
 import timber.log.Timber
 

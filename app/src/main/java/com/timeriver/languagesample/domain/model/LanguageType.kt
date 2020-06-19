@@ -1,4 +1,4 @@
-package com.timeriver.languagesample
+package com.timeriver.languagesample.domain.model
 
 import java.util.*
 

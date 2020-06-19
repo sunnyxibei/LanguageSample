@@ -2,6 +2,7 @@ package com.timeriver.languagesample
 
 import android.app.Application
 import android.os.Build
+import com.timeriver.languagesample.util.changeAppLanguage
 import timber.log.Timber
 
 

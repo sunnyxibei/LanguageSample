@@ -2,6 +2,7 @@ package com.timeriver.languagesample
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import com.timeriver.languagesample.util.attachLanguageInfo
 
 abstract class BaseActivity : AppCompatActivity() {
 
