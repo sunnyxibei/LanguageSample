@@ -3,6 +3,7 @@ package com.timeriver.languagesample.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 import timber.log.Timber
 import java.net.URL
 import kotlin.random.Random
@@ -132,6 +133,30 @@ class MainViewModel : ViewModel() {
         }
         fibonacci.take(5).forEach {
             Timber.d("MainViewModel, fibonacci $it")
+        }
+    }
+
+    /**
+     * 从功能上来看，Channel其实是生产者消费之
+     */
+    fun testChannel() {
+        val channel = Channel<Int>()
+        viewModelScope.launch {
+            val producer = launch {
+                var i = 0
+                while (isActive) {
+                    channel.send(i++)
+                    delay(1000L)
+                }
+            }
+            val consumer = launch {
+                for (element in channel) {
+                    Timber.d("MainViewModel, element = $element")
+                    delay(2000L)
+                }
+            }
+            producer.join()
+            consumer.join()
         }
     }
 

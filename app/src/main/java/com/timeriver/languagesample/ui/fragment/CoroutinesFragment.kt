@@ -25,6 +25,9 @@ class CoroutinesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bt_test_channel.setOnLimitClickListener {
+            viewModel.testChannel()
+        }
         bt_test_sequence.setOnLimitClickListener {
             viewModel.testSequence()
         }
