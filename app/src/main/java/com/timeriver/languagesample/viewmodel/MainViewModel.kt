@@ -2,10 +2,9 @@ package com.timeriver.languagesample.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
+import java.net.URL
 import kotlin.random.Random
 
 /**
@@ -73,5 +72,70 @@ class MainViewModel : ViewModel() {
         val nextLong = Random.nextLong(10)
         delay(nextLong * 1000L)
         return "${nextLong}s"
+    }
+
+    fun testWithContext() {
+        viewModelScope.launch {
+            Timber.d("MainViewModel, testWithContext")
+            Timber.d("MainViewModel, result ${withContextSample()}")
+        }
+    }
+
+    /**
+     * 从功能的角度上看，withContext和async一样，可以返回结果
+     * 通过源码可以发现，async是一个DeferredCoroutine
+     * withContext会阻塞执行block代码块
+     */
+    private suspend fun withContextSample(): String {
+        return withContext(Dispatchers.IO) {
+            runCatching { URL(SAMPLE_URL).readText() }.getOrDefault("失败了")
+        }
+    }
+
+    fun testCoroutineStart() {
+        viewModelScope.launch {
+            Timber.d("MainViewModel, testCoroutineStart coroutineContext = ${coroutineContext[Job]}")
+            logSample("1")
+            //start 模式为lazy时，懒汉式，launch后不会有任何调度行为，协程block（代码块）也不会进入执行状态，直到我们需要它执行（job.start|join）的时候
+            val job = launch {
+                logSample("2")
+            }
+            //注意，withContext是阻塞获取result的
+//            withContext(Dispatchers.Default) {
+//                logSample("2")
+//            }
+            logSample("3")
+            //join方法，通常用来调度任务执行顺序
+//            job.join()
+            logSample("4")
+        }
+    }
+
+    private fun logSample(text: String) {
+        Timber.d("MainViewModel, ${Thread.currentThread().name} logSample $text")
+    }
+
+    /**
+     * Sequence 惰性集合
+     */
+    fun testSequence() {
+        val fibonacci = sequence {
+            yield(1L) // first Fibonacci number
+            var cur = 1L
+            var next = 1L
+            while (true) {
+                yield(next) // next Fibonacci number
+                val tmp = cur + next
+                cur = next
+                next = tmp
+            }
+        }
+        fibonacci.take(5).forEach {
+            Timber.d("MainViewModel, fibonacci $it")
+        }
+    }
+
+    companion object {
+        private const val SAMPLE_URL = "https://www.yuque.com/xytech/flutter/dg1wmw"
     }
 }
