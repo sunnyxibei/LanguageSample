@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.net.URL
 import kotlin.random.Random
@@ -140,14 +141,15 @@ class MainViewModel : ViewModel() {
      * 从功能上来看，Channel其实是生产者消费之
      */
     fun testChannel() {
-        val channel = Channel<Int>()
+        val channel = Channel<Int>(3)
         viewModelScope.launch {
             val producer = launch {
-                var i = 0
-                while (isActive) {
-                    channel.send(i++)
-                    delay(1000L)
+                List(5) {
+                    channel.send(it)
+                    Timber.d("MainViewModel, send $it")
                 }
+                channel.close()
+                Timber.d("MainViewModel, close channel. ClosedForSend = ${channel.isClosedForSend} ClosedForReceive = ${channel.isClosedForReceive}")
             }
             val consumer = launch {
                 for (element in channel) {
@@ -158,6 +160,42 @@ class MainViewModel : ViewModel() {
             producer.join()
             consumer.join()
         }
+    }
+
+    /**
+     * flow更像是一个集成了coroutines高阶api的sequence，惰性集合，冷数据流，有下游订阅的时候才可是生产
+     * 而Channel，是热数据流，不依赖于接收端
+     * 这个写法，有点像Dart呢。。。
+     */
+    fun testFlow() {
+        val flow = flow {
+            (1..3).forEach {
+                emit(it)
+                delay(1000L)
+            }
+            throw ArithmeticException("Div 0")
+        }.flowOn(Dispatchers.IO)
+        viewModelScope.launch {
+            flow.catch {
+                Timber.e(it, "MainViewModel, testFlow")
+            }.onCompletion { cause: Throwable? ->
+                Timber.d("MainViewModel, testFlow finally")
+            }.collect {
+                Timber.d("MainViewModel, testFlow $it")
+            }
+        }
+
+        createFlow().launchIn(viewModelScope)
+    }
+
+    private fun createFlow() = flow {
+        (1..3).forEach {
+            emit(it)
+            delay(1000L)
+        }
+    }.onEach {
+        //这个onEach方法可以在聚合函数以外的地方处理数据，作用上来讲应该是Interceptor拦截器
+        Timber.d("MainViewModel, createFlow $it")
     }
 
     companion object {
