@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Language Sample</string>
     <string name="app_language">Language</string>
+    <string name="test_coroutines">Test Coroutines</string>
+    <string name="test_coroutine_non_block1">Test Coroutines Non-Block 1</string>
+    <string name="test_coroutine_non_block2">Test Coroutines Non-Block 2</string>
 </resources>

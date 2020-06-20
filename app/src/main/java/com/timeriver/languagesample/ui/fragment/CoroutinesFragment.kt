@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.timeriver.languagesample.R
+import com.timeriver.languagesample.ext.setOnLimitClickListener
 import com.timeriver.languagesample.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.fragment_coroutines.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CoroutinesFragment : Fragment() {
@@ -23,6 +25,15 @@ class CoroutinesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bt_test_coroutines.setOnLimitClickListener {
+            viewModel.testCoroutinesBlock()
+        }
+        bt_test_coroutines_non_block1.setOnLimitClickListener {
+            viewModel.testCoroutinesNonBlockWithAsync()
+        }
+        bt_test_coroutines_non_block2.setOnLimitClickListener {
+            viewModel.testCoroutinesNonBlockWithLaunch()
+        }
     }
 
 }
