@@ -138,7 +138,7 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * 从功能上来看，Channel其实是生产者消费之
+     * 从功能上来看，Channel其实是生产者消费之协程快捷版实现
      */
     fun testChannel() {
         val channel = Channel<Int>(3)
@@ -163,7 +163,9 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * flow更像是一个集成了coroutines高阶api的sequence，惰性集合，冷数据流，有下游订阅的时候才可是生产
+     * sequence只能使用yield方法，不能使用其他suspend方法
+     * 受 RestrictsSuspension 注解的约束，delay 不能在 SequenceScope 的扩展成员当中被调用，因而不能在序列生成器的协程体内调用了。
+     * flow更像是一个集成了coroutines高阶api的sequence，惰性集合，冷数据流，有下游订阅的时候才开始生产
      * 而Channel，是热数据流，不依赖于接收端
      * 这个写法，有点像Dart呢。。。
      */
@@ -184,8 +186,46 @@ class MainViewModel : ViewModel() {
                 Timber.d("MainViewModel, testFlow $it")
             }
         }
-
         createFlow().launchIn(viewModelScope)
+    }
+
+    /**
+     * 使用flow去组织并发suspend任务
+     */
+    fun testFlowWithSuspend() {
+        //传统方式组织并发
+        viewModelScope.launch {
+            (0..100).map {
+                async {
+                    Timber.d("MainViewModel, $it delay ${delaySample()}")
+                }
+            }.forEach {
+                it.await()
+            }
+            Timber.d("MainViewModel, wait for delay finish")
+        }
+
+        //asFlow方式组织并发，看源码这里其实等同于上面，也是通过forEach emit实现
+        viewModelScope.launch {
+            (0..100).map {
+                delaySample()
+            }.asFlow().onEach {
+                Timber.d("MainViewModel, delay $it")
+            }.onCompletion {
+                Timber.d("MainViewModel, wait for delay finish")
+            }.collect()
+        }
+
+        //这个更进一步，真并发，对flow的变化是铜鼓merge扩展方法实现，是并发式地组织
+        viewModelScope.launch {
+            (0..100).map {
+                flow<String> { delaySample() }
+            }.merge().onEach {
+                Timber.d("MainViewModel, delay $it")
+            }.onCompletion {
+                Timber.d("MainViewModel, wait for delay finish")
+            }.collect()
+        }
     }
 
     private fun createFlow() = flow {
