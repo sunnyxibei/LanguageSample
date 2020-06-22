@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.timeriver.languagesample.R
 import com.timeriver.languagesample.ext.setOnLimitClickListener
 import com.timeriver.languagesample.viewmodel.MainViewModel
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_coroutines.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -27,6 +28,7 @@ class CoroutinesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bt_test_flow.setOnLimitClickListener {
             viewModel.testFlow()
+            MobclickAgent.onEvent(requireContext(), "test_flow")
         }
         bt_test_channel.setOnLimitClickListener {
             viewModel.testChannel()
