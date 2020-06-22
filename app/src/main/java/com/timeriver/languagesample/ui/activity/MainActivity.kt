@@ -4,9 +4,10 @@ import android.os.Bundle
 import com.timeriver.languagesample.BaseActivity
 import com.timeriver.languagesample.R
 import com.timeriver.languagesample.ui.adapter.MainPageAdapter
-import com.timeriver.languagesample.viewmodel.MainViewModel
+import com.timeriver.languagesample.ui.fragment.CoroutinesFragment
+import com.timeriver.languagesample.ui.fragment.LanguageFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 /**
@@ -17,12 +18,19 @@ import timber.log.Timber
  */
 class MainActivity : BaseActivity() {
 
-    private val viewModel: MainViewModel by viewModel()
+    //the best practice for fragment
+    //直接通过Koin通过无参构造注入fragment实例，数据通过ViewModel传递
+    private val languageFragment: LanguageFragment by inject()
+
+    private val coroutinesFragment: CoroutinesFragment by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        main_pager.adapter = MainPageAdapter(this)
+        main_pager.adapter = MainPageAdapter(
+            activity = this,
+            list = listOf(coroutinesFragment, languageFragment)
+        )
     }
 
     override fun onBackPressed() {
