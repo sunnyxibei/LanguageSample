@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.timeriver.languagesample.domain.model.LanguageType
 import com.timeriver.languagesample.R
 import com.timeriver.languagesample.SharedPreferencesService
-import com.timeriver.languagesample.util.changeAppLanguage
+import com.timeriver.languagesample.domain.model.LanguageType
 import com.timeriver.languagesample.ui.activity.MainActivity
+import com.timeriver.languagesample.util.changeAppLanguage
 import kotlinx.android.synthetic.main.fragment_language.*
 import timber.log.Timber
 
@@ -71,6 +71,16 @@ class LanguageFragment : Fragment() {
 
     private fun onCustomBack() {
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Timber.d("LanguageFragment, onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.d("LanguageFragment, onPause")
     }
 
 }

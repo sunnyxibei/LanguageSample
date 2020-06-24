@@ -11,6 +11,7 @@ import com.timeriver.languagesample.viewmodel.MainViewModel
 import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_coroutines.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import timber.log.Timber
 
 class CoroutinesFragment : Fragment() {
 
@@ -53,4 +54,13 @@ class CoroutinesFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Timber.d("CoroutinesFragment, onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.d("CoroutinesFragment, onPause")
+    }
 }
