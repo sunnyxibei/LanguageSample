@@ -6,6 +6,7 @@ import com.timeriver.languagesample.R
 import com.timeriver.languagesample.ui.adapter.MainPageAdapter
 import com.timeriver.languagesample.ui.fragment.CoroutinesFragment
 import com.timeriver.languagesample.ui.fragment.LanguageFragment
+import com.timeriver.languagesample.ui.fragment.ListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -20,6 +21,8 @@ class MainActivity : BaseActivity() {
 
     //the best practice for fragment
     //直接通过Koin通过无参构造注入fragment实例，数据通过ViewModel传递
+    private val listFragment: ListFragment by inject()
+
     private val languageFragment: LanguageFragment by inject()
 
     private val coroutinesFragment: CoroutinesFragment by inject()
@@ -29,7 +32,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         main_pager.adapter = MainPageAdapter(
             activity = this,
-            list = listOf(coroutinesFragment, languageFragment)
+            list = listOf(listFragment, coroutinesFragment, languageFragment)
         )
     }
 
