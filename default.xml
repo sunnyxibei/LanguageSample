@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+    <remote name="origin" fetch="https://github.com/sunnyxibei/" />
+    <default remote="origin" reversion="develop" sync-j="4" />
+
+    <project name="LanguageSample" path="LanguageSample" />
+    <project name="go_gank" path="go_gank" />
+</manifest>
